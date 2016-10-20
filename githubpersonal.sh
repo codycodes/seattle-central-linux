@@ -14,5 +14,7 @@ echo "***email configured***"
 git config --global color.ui auto
 echo "helpful colors enabled"
 
-git pull https://github.com/codycodes/Linux-Private-Code
-echo "Cody's personal repository was pulled to this dir"
+## create my own repository to pull from                                                  
+git init ~/codylinuxcode
+cd ~/codylinuxcode
+git pull https://github.com/codycodes/Linux-Private-Code.git
