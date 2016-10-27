@@ -130,6 +130,6 @@ tree project1
 
 sleep 5
 
-python /opt/django/django-env/manage.py runserver 0.0.0.0:8000
+python /opt/django/project1/manage.py runserver 0.0.0.0:8000
 
 
