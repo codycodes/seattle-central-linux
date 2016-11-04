@@ -1,0 +1,2 @@
+#!/bin/bash
+[ sudo yum clean all && sudo yum -y update kernel && sudo reboot ] || echo "FAILURE"
