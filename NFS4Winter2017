@@ -1,0 +1,51 @@
+    1  yum install nfs-utils rpcbind
+    2  vi /etc/exports
+    3  vi /etc/exports
+    4  /sbin/chkconfig rpcbind on
+    5  /sbin/chkconfig nfs on
+    6  service rpcbind start
+    7  service nfs start
+    8  apt-get install -y nfs-common
+    9  vi /etc/exports
+   10  service rpcbind start 
+   11  service nfs start
+   12  iptables -F
+   13  service rpcbind start 
+   14  service nfs start
+   15  iptables
+   16  iptables -h
+   17  iptables -table
+   18  iptables -h
+   19  iptables -list
+   20  iptables --list
+   21   service nfs status
+   22  service rpcbind status
+   23  rpcinfo -p localhost
+   24  showmount -e localhost
+   25  netstat -ptuln
+   26  iptables -S
+   27  sudo firewall-cmd --zone=public --add-port=2049/tcp --permanent
+   28  sudo firewall-cmd --reload
+   29  showmount -e localhost
+   30  vi /etc/exports
+   31  showmount -e localhost
+   32  service nfs stop
+   33  service rpcbind stop
+   34  service rpcbind start
+   35   service nfs start
+   36  showmount -e localhost
+   37  service nfs stop
+   38  service rpcbind stop
+   39  service rpcbind start
+   40  service nfs start
+   41  showmount -e localhost
+   42  iptables -S
+   43  netstat -ptuln
+   44  showmount -e localhost
+   45  service nfs status
+   46  service rpcbind status
+   47  service nfs rest
+   48  service nfs restart
+   49  showmount -e localhost
+   50  history
+   51  history
