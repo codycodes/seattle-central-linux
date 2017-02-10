@@ -1,0 +1,82 @@
+    1  sudo apt-get install nfs-common
+    2  service rpcbind restart
+    3  mount 10.128.0.4:/home /home
+    4  ls
+    5  showmount -e $10.128.0.4
+    6  rpcinfo -localhost
+    7  rpcinfo -p localhost
+    8  showmount -e $10.128.0.4
+    9  mount 10.128.0.4:/home /home
+   10  showmount -e $10.128.0.4
+   11  service rpcbind restart
+   12  showmount -e $10.128.0.4
+   13  mount 10.128.0.4:/home /home
+   14  rpcinfo -p $10.128.0.4
+   15  man mount
+   16  unmount 10.128.0.4:/home /home
+   17  umount 10.128.0.4:/home /home
+   18  umount 10.128.0.4:/home
+   19  ls
+   20  rpcinfo -p $10.128.0.4
+   21  service rpcbind status
+   22  service nfs status
+   23  service nfs start
+   24  showmount -e $10.128.0.4
+   25  rpcinfo -p $10.128.0.4
+   26  rpcinfo -p 10.128.0.4
+   27  rpcinfo -p 
+   28  showmount -e 10.128.0.4
+   29  man mkdir
+   30  mkdir -pv /nfs/general
+   31  sudo mkdir -pv /nfs/home
+   32  mount 10.128.0.4:/home /nfs/home
+   33  cd /nfs/home
+   34  ls
+   35  cd cgagno01
+   36  ls
+   37  cat file.txt
+   38  apt-get -y install libnss-ldap libpam-ldap ldap-utils nscdapt-get -y install libnss-ldap libpam-ldap ldap-utils nscd
+   39  apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd
+   40  sudo vi /etc/nsswitch.conf
+   41  sudo nscd restart
+   42  service nscd restart
+   43  getent passwd ldapuser
+   44  getent passwd ldapadm
+   45  history
+   46  apt-get -y install libnss-ldap libpam-ldap ldap-utils nscdapt-get -y install libnss-ldap libpam-ldap ldap-utils nscd
+   47  apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd
+   48  apt-get -y remove libnss-ldap libpam-ldap ldap-utils nscd
+   49  apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd
+   50  apt-get -y remove libnss-ldap libpam-ldap ldap-utils nscd
+   51  apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd
+   52  apt-get -y remove libnss-ldap libpam-ldap ldap-utils nscd
+   53  apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd
+   54  vi /etc/nsswitch.conf
+   55  sudo service nscd restart
+   56  getent passwd ldapadm
+   57  getent passwd l
+   58  getent passwd ldapadm
+   59  su - ccodes
+   60  su ccodesasdf
+   61  su - ccodesasdf
+   62  cd etc/sshd
+   63  cd etc/ssh.d
+   64  cd etc
+   65  l
+   66  cd /etc/
+   67  ls
+   68  ls | grep ssh
+   69  cd ssh
+   70  ls
+   71  cp sshd_config sshd_config.bak
+   72  vi sshd_config
+   73  service ssh restart
+   74  service rpcbind start
+   75  mount -a
+   76  mount | grep nfs
+   77  cat ../fstab 
+   78  vi ../fstab
+   79  cat ../fstab 
+   80  mount -a
+   81  mkdir -pv ~/dev ~/config
+   82  history
