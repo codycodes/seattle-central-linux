@@ -20,7 +20,7 @@ def start_nagios_services():
 def set_nagios_password():
     # checks signal used to close to command to reprompt password if necessary
     while os.system('htpasswd -c /etc/nagios/passwd nagiosadmin') == 768:
-        print("\n\n*** Please type a new password again. ***\n")
+        print("\n\n*** Please type a new password again. ***\n\n")
 
 
 if __name__ == "__main__":
