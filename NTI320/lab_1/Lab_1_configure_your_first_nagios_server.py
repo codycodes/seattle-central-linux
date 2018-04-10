@@ -35,5 +35,6 @@ if __name__ == "__main__":
     install_nagios_server_packages()
     start_nagios_server_services()
     set_nagios_dashboard_password()
+    print("*** you must run the code on client-a first for the check_nrpe command to connect ***")
     internal_ip = raw_input("Please enter the internal ip address of client-a to run the check_nrpe plugin: ")
     check_nrpe_plugin_client(internal_ip)
