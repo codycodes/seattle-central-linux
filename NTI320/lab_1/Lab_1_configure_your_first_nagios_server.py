@@ -27,6 +27,7 @@ def check_nrpe_plugin_client(internal_ip):
     '''
     Checks the nrpe plugin on the client using the supplied internal IP
     '''
+    print("the output of running the check_nrpe plugin is: ")
     os.system('/usr/lib64/nagios/plugins/check_nrpe -H' + internal_ip)
 
 
