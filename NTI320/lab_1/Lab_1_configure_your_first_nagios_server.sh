@@ -1,4 +1,5 @@
 #!/bin/bash
+# configuration for nagios-a
 yum -y install nagios
 systemctl enable nagios && systemctl start nagios
 setenforce 0
