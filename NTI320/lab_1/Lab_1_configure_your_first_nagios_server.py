@@ -22,6 +22,7 @@ def set_nagios_dashboard_password():
     while os.system('htpasswd -c /etc/nagios/passwd nagiosadmin') == 768:
         print("\n\n*** Please type a new password again. ***\n\n")
 
+
 def check_nrpe_plugin_client(internal_ip):
     '''
     Checks the nrpe plugin on the client using the supplied internal IP
@@ -29,11 +30,9 @@ def check_nrpe_plugin_client(internal_ip):
     os.system('/usr/lib64/nagios/plugins/check_nrpe -H' + internal_ip)
 
 
-
-
 if __name__ == "__main__":
     install_nagios_server_packages()
     start_nagios_server_services()
     set_nagios_dashboard_password()
-    internal_ip = raw_input("Please enter the internal ip address of client-a to run the check_nrpe plugin")
+    internal_ip = raw_input("Please enter the internal ip address of client-a to run the check_nrpe plugin: ")
     check_nrpe_plugin_client(internal_ip)
