@@ -1,6 +1,6 @@
 #!/bin/python
 import os
-
+# configuration for nagios-a
 
 def install_nagios_server_packages():
     os.system('yum -y install nagios')
