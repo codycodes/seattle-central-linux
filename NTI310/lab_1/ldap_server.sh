@@ -5,6 +5,8 @@ git clone https://github.com/nic-instruction/hello-nti-310.git /tmp # clone to /
 
 yum -y install openldap-servers #install LDAP server
 
+unalias cp # unalias to ensure that we remove interactive mode
+
 cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG # Add example DB_CONFIG
 chown ldap . /var/lib/ldap/DB_CONFIG # chown for user and group
 
@@ -20,12 +22,11 @@ sed -i 's,Require local,#Require local\n   Require all granted,g' /etc/httpd/con
 cp /tmp/hello-nti-310/config/config.php /etc/phpldapadmin/config.php # get the new config.php for ldap admin from the github repo
 chown ldap:apache /etc/phpldapadmin/config.php
 
-
 # setup password/hash for ldap
 newsecret=$(slappasswd -g)
 newhash=$(slappasswd -s "$newsecret")
 echo -n "$newsecret" > /root/ldap_admin_pass
-chmod 0600 /root/ldap_admin_pass
+chmod 0600 /root/ldap_admin_pass # give owner r/w permissions
 
 echo -e "dn: olcDatabase={2}hdb,cn=config
 changetype: modify
@@ -68,9 +69,9 @@ olcTLSCertificateKeyFile: /etc/openldap/certs/nti310ldapkey.pem" > /tmp/certs.ld
 
 ldapmodify -Y EXTERNAL  -H ldapi:/// -f /tmp/certs.ldif
 
-slaptest -u && echo "it works"
+slaptest -u && echo "slaptest -u: it works"
 
-unalias cp # unalias to ensure
+
 
 ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/cosine.ldif
 ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/nis.ldif
@@ -99,5 +100,7 @@ ou: Group" > base.ldif
 setenforce 0 # selinux permissive mode
 
 ldapadd -x -W -D "cn=ldapadm,dc=nti310,dc=local" -f base.ldif -y /root/ldap_admin_pass
+
+alias cp='cp -i' # re-alias so it works the way that it did before
 
 systemctl reload httpd
