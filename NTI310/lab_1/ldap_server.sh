@@ -1,7 +1,7 @@
 #!/bin/bash
 
 yum install git -y
-git clone https://github.com/nic-instruction/hello-nti-310.git /tmp # clone to /tmp folder
+git clone https://github.com/nic-instruction/hello-nti-310.git /tmp/nti310_install_ldap # clone to an empty dir under tmp
 
 yum -y install openldap-servers openldap-clients
 
@@ -13,13 +13,13 @@ chown ldap . /var/lib/ldap/DB_CONFIG # chown for user and group
 systemctl enable slapd && systemctl start slapd
 
 yum -y install httpd epel-release phpldapadmin # install components for LDAP web interface
-setbool -P httpd_can_connect_ldap on # selinux permissions for HTTPD and LDAP
+setsebool -P httpd_can_connect_ldap on # selinux permissions for HTTPD and LDAP
 
 systemctl enable httpd && systemctl start httpd
 
 sed -i 's,Require local,#Require local\n   Require all granted,g' /etc/httpd/conf.d/phpldapadmin.conf # allow host access from any IP
 
-cp /tmp/hello-nti-310/config/config.php /etc/phpldapadmin/config.php # get the new config.php for ldap admin from the github repo
+cp /tmp/nti310_install_ldap/config/config.php /etc/phpldapadmin/config.php # get the new config.php for ldap admin from the github repo
 chown ldap:apache /etc/phpldapadmin/config.php
 
 # setup password/hash for ldap
