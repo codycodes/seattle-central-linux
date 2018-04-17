@@ -75,23 +75,23 @@ ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp/certs.ldif
 slaptest -u # run a slaptest to verify configuration
 
 # Creates group and people structure base
-echo -e "dn: dc=nti310,dc=local
+echo 'dn: dc=nti310,dc=local
 dc: nti310
 objectClass: top
 objectClass: domain
-\n
+
 dn: cn=ldapadm ,dc=nti310,dc=local
 objectClass: organizationalRole
 cn: ldapadm
 description: LDAP Manager
-\n
+
 dn: ou=People,dc=nti310,dc=local
 objectClass: organizationalUnit
 ou: People
-\n
+
 dn: ou=Group,dc=nti310,dc=local
 objectClass: organizationalUnit
-ou: Group" > /tmp/base.ldif
+ou: Group' > /tmp/base.ldif
 
 setenforce 0 # selinux permissive mode
 
