@@ -56,7 +56,7 @@ olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external, 
 
 openssl req -new -x509 -nodes -out /etc/openldap/certs/nti310ldapcert.pem -keyout /etc/openldap/certs/nti310ldapkey.pem -days 365 \
 -subj "/C=US/ST=WA/L=Seattle/O=SCC/OU=IT/CN=nti310.local"
-chown -R ldap. /etc/openldap/certs/nti310.pem
+chown -R ldap. /etc/openldap/certs/nti310ldapkey.pem
 
 echo -e "dn: cn=config
 changetype: modify
@@ -68,14 +68,13 @@ changetype: modify
 replace: olcTLSCertificateKeyFile
 olcTLSCertificateKeyFile: /etc/openldap/certs/nti310ldapkey.pem" > /tmp/certs.ldif
 
-ldapmodify -Y EXTERNAL  -H ldapi:/// -f /tmp/db.ldif
-ldapmodify -Y EXTERNAL  -H ldapi:/// -f /tmp/monitor.ldif
+ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp/db.ldif
+ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp/monitor.ldif
 ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp/certs.ldif
 
-slaptest -u && echo "slaptest -u: it works"
+slaptest -u # run a slaptest to verify configuration
 
 # Creates group and people structure base
-
 echo -e "dn: dc=nti310,dc=local
 dc: nti310
 objectClass: top
@@ -92,11 +91,11 @@ ou: People
 \n
 dn: ou=Group,dc=nti310,dc=local
 objectClass: organizationalUnit
-ou: Group" > base.ldif
+ou: Group" > /tmp/base.ldif
 
 setenforce 0 # selinux permissive mode
 
-ldapadd -x -W -D "cn=ldapadm,dc=nti310,dc=local" -f base.ldif -y /root/ldap_admin_pass
+ldapadd -x -W -D "cn=ldapadm,dc=nti310,dc=local" -f /tmp/base.ldif -y /root/ldap_admin_pass
 
 alias cp='cp -i' # re-alias so it works the way that it did before
 
