@@ -3,7 +3,7 @@
 yum install git -y
 git clone https://github.com/nic-instruction/hello-nti-310.git /tmp # clone to /tmp folder
 
-yum -y install openldap-servers #install LDAP server
+yum -y install openldap-servers openldap-clients
 
 unalias cp # unalias to ensure that we remove interactive mode
 
@@ -28,6 +28,11 @@ newhash=$(slappasswd -s "$newsecret")
 echo -n "$newsecret" > /root/ldap_admin_pass
 chmod 0600 /root/ldap_admin_pass # give owner r/w permissions
 
+# Add boilerplate databases
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/cosine.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/nis.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/inetorgperson.ldif
+
 echo -e "dn: olcDatabase={2}hdb,cn=config
 changetype: modify
 replace: olcSuffix
@@ -43,19 +48,15 @@ changetype: modify
 replace: olcRootPW
 olcRootPW: $newhash" > /tmp/db.ldif
 
-ldapmodify -Y EXTERNAL  -H ldapi:/// -f /tmp/db.ldif
-
 echo 'dn: olcDatabase={1}monitor,cn=config
 changetype: modify
 replace: olcAccess
-olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external, cn=auth" \
-read by dn.base="cn=ldapadm,dc=nti310,dc=local" read by * none' > /tmp/monitor.ldif
-
-ldapmodify -Y EXTERNAL  -H ldapi:/// -f /tmp/monitor.ldif
+olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external, cn=auth"' \
+'read by dn.base="cn=ldapadm,dc=nti310,dc=local" read by * none' > /tmp/monitor.ldif
 
 openssl req -new -x509 -nodes -out /etc/openldap/certs/nti310ldapcert.pem -keyout /etc/openldap/certs/nti310ldapkey.pem -days 365 \
 -subj "/C=US/ST=WA/L=Seattle/O=SCC/OU=IT/CN=nti310.local"
-chown -R ldap. /etc/openldap/certs/nti*.pem
+chown -R ldap. /etc/openldap/certs/nti310.pem
 
 echo -e "dn: cn=config
 changetype: modify
@@ -67,15 +68,11 @@ changetype: modify
 replace: olcTLSCertificateKeyFile
 olcTLSCertificateKeyFile: /etc/openldap/certs/nti310ldapkey.pem" > /tmp/certs.ldif
 
-ldapmodify -Y EXTERNAL  -H ldapi:/// -f /tmp/certs.ldif
+ldapmodify -Y EXTERNAL  -H ldapi:/// -f /tmp/db.ldif
+ldapmodify -Y EXTERNAL  -H ldapi:/// -f /tmp/monitor.ldif
+ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp/certs.ldif
 
 slaptest -u && echo "slaptest -u: it works"
-
-
-
-ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/cosine.ldif
-ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/nis.ldif
-ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/inetorgperson.ldif
 
 # Creates group and people structure base
 
