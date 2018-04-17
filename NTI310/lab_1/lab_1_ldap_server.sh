@@ -78,7 +78,7 @@ dn: ou=Group,dc=nti310,dc=local
 objectClass: organizationalUnit
 ou: Group' > /tmp/base.ldif
 setenforce 0 # temporarily selinux permissive mode
-sed -i 's,SELINUX=enforcing,SELINUX=disabled,g' /etc/httpd/conf.d/phpldapadmin.conf # don't load an selinux policy
+sed -i 's,SELINUX=enforcing,SELINUX=disabled,g' /etc/sysconfig/selinux # don't load an selinux policy
 ldapadd -x -W -D "cn=ldapadm,dc=nti310,dc=local" -f /tmp/base.ldif -y /root/ldap_admin_pass
 alias cp='cp -i' # re-alias cp so it works the way that it did before (interactively)
 systemctl reload httpd
