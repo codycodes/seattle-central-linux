@@ -33,20 +33,20 @@ ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/cosine.ldif
 ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/nis.ldif
 ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/inetorgperson.ldif
 
-echo -e "dn: olcDatabase={2}hdb,cn=config
+echo 'dn: olcDatabase={2}hdb,cn=config
 changetype: modify
 replace: olcSuffix
 olcSuffix: dc=nti310,dc=local
-\n
+
 dn: olcDatabase={2}hdb,cn=config
 changetype: modify
 replace: olcRootDN
 olcRootDN: cn=ldapadm,dc=nti310,dc=local
-\n
+
 dn: olcDatabase={2}hdb,cn=config
 changetype: modify
 replace: olcRootPW
-olcRootPW: $newhash" > /tmp/db.ldif
+olcRootPW: '$newhash > /tmp/db.ldif
 
 echo 'dn: olcDatabase={1}monitor,cn=config
 changetype: modify
@@ -56,17 +56,17 @@ olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external, 
 
 openssl req -new -x509 -nodes -out /etc/openldap/certs/nti310ldapcert.pem -keyout /etc/openldap/certs/nti310ldapkey.pem -days 365 \
 -subj "/C=US/ST=WA/L=Seattle/O=SCC/OU=IT/CN=nti310.local"
-chown -R ldap. /etc/openldap/certs/nti310ldapkey.pem
+chown -R ldap . /etc/openldap/certs/nti310ldapkey.pem
 
-echo -e "dn: cn=config
+echo 'dn: cn=config
 changetype: modify
 replace: olcTLSCertificateFile
 olcTLSCertificateFile: /etc/openldap/certs/nti310ldapcert.pem
-\n
+
 dn: cn=config
 changetype: modify
 replace: olcTLSCertificateKeyFile
-olcTLSCertificateKeyFile: /etc/openldap/certs/nti310ldapkey.pem" > /tmp/certs.ldif
+olcTLSCertificateKeyFile: /etc/openldap/certs/nti310ldapkey.pem' > /tmp/certs.ldif
 
 ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp/db.ldif
 ldapmodify -Y EXTERNAL -H ldapi:/// -f /tmp/monitor.ldif
