@@ -5,7 +5,7 @@
 ###############
 apt-get -y install nagios-plugins nagios-nrpe-server
 cp /etc/nagios/nrpe.cfg /etc/nagios/nrpe.cfg.bak
-echo "Enter the internal ip address of your nagios-a server: "
+echo "Enter the internal ip address of your nagios server: "
 read internal_ip
 sed -i "s/allowed_hosts=127.0.0.1/allowed_hosts=127.0.0.1, $internal_ip/g" /etc/nagios/nrpe.cfg
 sed -i "s,command[check_hda1]=/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -p \
