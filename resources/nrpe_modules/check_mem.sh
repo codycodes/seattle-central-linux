@@ -1,6 +1,7 @@
 #!/bin/bash
 # create a memory-checking plugin for NRPE
 # slightly modified code from https://exchange.nagios.org/directory/Plugins/System-Metrics/Memory/Check-mem-%28by-Nestor%40Toronto%29/details
+
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
   FreeM=`free -m`
   memTotal_m=`echo "$FreeM" |grep Mem |awk '{print $2}'`
@@ -10,6 +11,7 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && [ "$3" = "-c" ] && [ "$4" -gt "0" ]; t
   memAvailable_m=`echo "$FreeM" |grep Mem |awk '{print $7}'`
   memUsed_m=$(($memTotal_m-$memFree_m-$memBuffer_cache_m))
   memUsedPrc=`echo $((($memUsed_m*100)/$memTotal_m))||cut -d. -f1`
+
   if [ "$memUsedPrc" -ge "$4" ]; then
     echo "Memory: CRITICAL Total: $memTotal_m MB - Used: $memUsed_m MB - $memUsedPrc% used!|
     TOTAL=$memTotal_m;;;; USED=$memUsed_m;;;; BUFFER/CACHE=$memBuffer_cache_m;;;; AVAILABLE=$memA
@@ -26,6 +28,7 @@ if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && [ "$3" = "-c" ] && [ "$4" -gt "0" ]; t
     e_m;;;;"
     exit 0;
   fi
+
 else # If inputs are not as expected, print help.
   sName="`echo $0|awk -F '/' '{print $NF}'`"
   echo -e "\n\n\t\t### $sName Version 2.1###\n"
