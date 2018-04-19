@@ -1,3 +1,4 @@
+#!/bin/bash
 # create a memory-checking plugin for NRPE
 # slightly modified code from https://exchange.nagios.org/directory/Plugins/System-Metrics/Memory/Check-mem-%28by-Nestor%40Toronto%29/details
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then
