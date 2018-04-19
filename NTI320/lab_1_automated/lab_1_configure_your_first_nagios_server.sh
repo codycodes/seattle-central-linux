@@ -61,10 +61,12 @@ define service {
   check_command        check_nrpe!check_total_procs
 }
 define service {
-  use                  generic-service       ; Name of the service template to apply
+  use                  generic-service
   host_name            '$client_name'
   service_description  memory
   check_command        check_nrpe!check_mem
 }' >> /etc/nagios/conf.d/$client_name.cfg
 
 /usr/sbin/nagios -v /etc/nagios/nagios.cfg # verify Nagios configuration
+
+systemctl reload nagios
