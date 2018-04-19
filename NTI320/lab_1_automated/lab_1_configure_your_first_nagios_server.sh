@@ -22,42 +22,47 @@ command_name check_nrpe
 command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
 }' >> /etc/nagios/objects/commands.cfg
 
-echo '# a minimal configuration for
+echo "Enter the internal ip address of your NRPE client: "
+read internal_ip
+echo "Enter the name of your NRPE client: "
+read client_name
+
+echo '# a minimal configuration for '$client_name'
 # Host Definition
 define host {
   use              linux-server       ; Inherit default values from a template
-  host_name        client-a           ; The name we are giving to this host
-  alias            client-a server    ; A longer name associated with the host
-  address          10.142.0.3         ; IP address of the host
+  host_name        '$client_name'           ; The name we are giving to this host
+  alias            '$client_name' server    ; A longer name associated with the host
+  address          '$internal_ip'         ; IP address of the host
 }
 # Service Definition
 define service {
   use                  generic-service
-  host_name            client-a
+  host_name            '$client_name'
   service_description  load
   check_command        check_nrpe!check_load
 }
 define service {
   use                  generic-service
-  host_name            client-a
+  host_name            '$client_name'
   service_description  users
   check_command        check_nrpe!check_users
 }
 define service {
   use                  generic-service
-  host_name            client-a
+  host_name            '$client_name'
   service_description  disk
   check_command        check_nrpe!check_disk
 }
 define service {
   use                  generic-service
-  host_name            client-a
+  host_name            '$client_name'
   service_description  totalprocs
   check_command        check_nrpe!check_total_procs
 }
 define service {
   use                  generic-service       ; Name of the service template to apply
-  host_name            client-a
+  host_name            '$client_name'
   service_description  memory
   check_command        check_nrpe!check_mem
-}' >> /etc/nagios/conf.d/client-a.cfg
+}' >> /etc/nagios/conf.d/$client_name.cfg
