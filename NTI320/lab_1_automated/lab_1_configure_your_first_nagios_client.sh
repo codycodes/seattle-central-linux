@@ -4,13 +4,14 @@
 #On the client#
 ###############
 apt-get -y install nagios-plugins nagios-nrpe-server
-cp /etc/nagios/nrpe.cfg /etc/nagios/nrpe.cfg.bak
 echo "Enter the internal ip address of your nagios server: "
 read internal_ip
-sed -i "s/allowed_hosts=127.0.0.1/allowed_hosts=127.0.0.1, $internal_ip/g" /etc/nagios/nrpe.cfg
-sed -i "s,command[check_hda1]=/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -p \
-/dev/hda1,command[check_disk]=/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -p \
-/dev/sda1,g" /etc/nagios/nrpe.cfg
+
+sed -i.bak "s/allowed_hosts=127.0.0.1/allowed_hosts=127.0.0.1, $internal_ip/g" /etc/nagios/nrpe.cfg # create backup file
+string='command\[check_hda1\]=/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -p /dev/hda1' # escape square brackets
+replacement_string='command\[check_sda1\]=/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -p /dev/sda1'
+sed -i "s;$string;$replacement_string;g" /etc/nagios/nrpe.cfg # use semicolons as delimiter
+
 echo '# create a memory-checking plugin for NRPE
 # slightly modified code from https://exchange.nagios.org/directory/Plugins/System-Metrics/Memory/Check-mem-%28by-Nestor%40Toronto%29/details
 if [ "$1" = "-w" ] && [ "$2" -gt "0" ] && [ "$3" = "-c" ] && [ "$4" -gt "0" ]; then

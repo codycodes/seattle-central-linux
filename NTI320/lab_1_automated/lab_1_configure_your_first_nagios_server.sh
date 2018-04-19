@@ -66,3 +66,5 @@ define service {
   service_description  memory
   check_command        check_nrpe!check_mem
 }' >> /etc/nagios/conf.d/$client_name.cfg
+
+/usr/sbin/nagios -v /etc/nagios/nagios.cfg # verify Nagios configuration
