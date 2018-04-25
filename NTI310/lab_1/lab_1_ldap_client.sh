@@ -9,9 +9,10 @@ read internal_ip
 sed -i.bak "\,ldap://,s,$,$internal_ip," /tmp/debconf # add internal ip to debconf
 while read line; do echo "$line" | debconf-set-selections; done < /tmp/debconf # read each line as input to set debconf
 
-apt-get --yes install libpam-ldap nscd
 sed -i.bak '/compat/s/$/ ldap/' /etc/nsswitch.conf # sed line to append ldap w/"compat" match
 systemctl reload-or-restart nscd
-getent passwd | grep cgagnon # see if my user is on the ldap-a server
+
+# verify that the client is working by seeing if my user is on the ldap-a server
+getent passwd | grep cgagnon
 
 unset DEBIAN_FRONTEND
