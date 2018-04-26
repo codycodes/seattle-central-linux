@@ -1,7 +1,7 @@
 #!/bin/bash
-yum --yes install cacti
-yum --yes install mariadb-server
-yum --yes install php-process php-gd php
+yum -y install cacti
+yum -y install mariadb-server
+yum -y install php-process php-gd php
 
 systemctl enable mariadb && systemctl start mariadb
 systemctl enable httpd && systemctl start httpd
