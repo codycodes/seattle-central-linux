@@ -9,9 +9,7 @@ systemctl enable snmpd && systemctl start snmpd
 
 echo -n "Enter the password you'd like to use for MariaDB: "
 read db_password
-mysqladmin -u root --password=$db_password
-
-mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p mysql
+mysqladmin password "$db_password" # set the mysql database password
 
 echo -n "Enter the password you'd like to use for cacti: "
 read cacti_password
@@ -27,11 +25,14 @@ FLUSH privileges;
 
 GRANT SELECT ON mysql.time_zone_name TO cacti@localhost;
 flush privileges;" > cacti_auth.sql
-mysql -u root -p < cacti_auth.sql
+mysql -p"$db_password" < cacti_auth.sql # insert this sql into the db
+
+# add tzinfo to mysql db
+mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -p"$db_password" --database=mysql
 
 cacti_path=$(rpm -ql cacti | grep cacti.sql) # grabs the path to cacti
-mysql -u cacti -p cacti < /usr/share/doc/cacti-1.1.37/cacti.sql
 
+mysql cacti < $cacti_path -u cacti -p"$cacti_password"
 
 # # update username and password fields inside cacti/db.php config
 # if [ -z "$cacti_username" ]; then
@@ -40,8 +41,9 @@ mysql -u cacti -p cacti < /usr/share/doc/cacti-1.1.37/cacti.sql
 #     echo "Adding user: $cacti_username"
 #     sed -i.bak "s,\$database_username = cactiuser,\$database_username = $cacti_username,g" /etc/cacti/db.php
 # fi
-sed -i.bak "s,\$database_username = cactiuser,\$database_username = cacti,g" /etc/cacti/db.php
-sed -i.bak "s,\$database_password = cactiuser,\$database_password = $cacti_password,g" /etc/cacti/db.php
+
+sed -i.bak "s,\$database_username = 'cactiuser',\$database_username = 'cacti',g" /etc/cacti/db.php
+sed -i "s,\$database_password = 'cactiuser',\$database_password = '$cacti_password',g" /etc/cacti/db.php
 
 sed -i 's/Require host localhost/Require all granted/g' /etc/httpd/conf.d/cacti.conf
 sed -i 's/Allow from localhost/Allow from all/g' /etc/httpd/conf.d/cacti.conf
