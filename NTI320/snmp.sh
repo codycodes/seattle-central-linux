@@ -1,6 +1,5 @@
 #!/bin/bash
-
-
+# snmp automation script
 yum -y install net-snmp
 # installs a package which gives us the snmpwalk command
 yum -y install net-snmp-utils
