@@ -7,7 +7,7 @@ stars at the first and last index.
 
 
 def stars(string):
-    print('*' + string.replace('\n', '') + '*')
+    print('*' + string)
 
 def exclamation_prepend(string):
     print('!' + string)
@@ -21,6 +21,7 @@ file = open("questions.txt", "r")
 file_lines = file.readlines()
 for line in file_lines:
     if len(line) > 1:
+        line = line.replace('\n', '')
         #stars(line)
         exclamation_prepend(line)
     else:
