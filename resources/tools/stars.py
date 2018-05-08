@@ -9,6 +9,8 @@ stars at the first and last index.
 def stars(string):
     print('*' + string.replace('\n', '') + '*')
 
+def exclamation_prepend(string):
+    print('!' + string)
 
 # TODO: make it work with sysarg
 # import sys
@@ -19,7 +21,8 @@ file = open("questions.txt", "r")
 file_lines = file.readlines()
 for line in file_lines:
     if len(line) > 1:
-        stars(line)
+        #stars(line)
+        exclamation_prepend(line)
     else:
         print('')
 
