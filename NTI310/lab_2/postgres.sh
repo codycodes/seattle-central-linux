@@ -30,8 +30,8 @@ systemctl status postgresql
 yum -y install phpPgAdmin
 
 # allow host access from any IP
-sed -i 's,Require local,#Require local\n   Require all granted,g' /etc/httpd/conf.d/phpPgAdmin
-sed -i 's,Allow from localhost,Allow from all,g' /etc/httpd/conf.d/cacti.conf
+sed -i.bak 's,Require local,Require all granted,g' /etc/httpd/conf.d/phpPgAdmin
+sed -i.bak 's,Allow from localhost,Allow from all,g' /etc/httpd/conf.d/phpPgAdmin
 
 systemctl enable httpd && systemctl start httpd
 
