@@ -25,3 +25,15 @@ GRANT ALL PRIVILEGES ON DATABASE myproject TO myprojectuser;" > /tmp/myproject.s
 sudo -i -u postgres psql -U postgres -f /tmp/myproject.sql && echo "myproject db add complete!"
 
 systemctl status postgresql
+
+# install the web frontend
+yum -y install phpPgAdmin
+
+# allow host access from any IP
+sed -i 's,Require local,#Require local\n   Require all granted,g' /etc/httpd/conf.d/phpPgAdmin
+sed -i 's,Allow from localhost,Allow from all,g' /etc/httpd/conf.d/cacti.conf
+
+systemctl enable httpd && systemctl start httpd
+
+setenforce 0 # set selinux to permissive now
+sed -i 's,SELINUX=enforcing,SELINUX=disabled,g' /etc/sysconfig/selinux # don't load an selinux policy
