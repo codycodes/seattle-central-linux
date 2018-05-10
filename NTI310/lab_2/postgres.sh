@@ -8,6 +8,7 @@ yum install -y python-pip python-devel gcc postgresql-server postgresql-devel po
 postgresql-setup initdb
 # set md5 authentication
 sed -i.bak "s/ident/md5/g" /var/lib/pgsql/data/pg_hba.conf
+# sed -i 's/peer/md5/g' /var/lib/pgsql/data/pg_hba.conf
 
 # start postgres & enable for start @ boot
 systemctl start postgresql && systemctl enable postgresql
@@ -34,6 +35,7 @@ sed -i.bak 's,Require local,Require all granted,g' /etc/httpd/conf.d/phpPgAdmin.
 sed -i 's,Allow from 127.0.0.1,Allow from all,g' /etc/httpd/conf.d/phpPgAdmin.conf
 
 systemctl enable httpd && systemctl start httpd
+
 
 setenforce 0 # set selinux to permissive now
 sed -i 's,SELINUX=enforcing,SELINUX=disabled,g' /etc/sysconfig/selinux # don't load an selinux policy
