@@ -22,6 +22,7 @@ ALTER ROLE myprojectuser SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE myproject TO myprojectuser;" > /tmp/myproject.sql
 # used in our script to input our newly coded db (above) as the postgres user
 sudo -i -u postgres psql -U postgres -f /tmp/myproject.sql
+rm -f /tmp/myproject.sql
 
 # install the web frontend
 yum -y install phpPgAdmin
@@ -32,6 +33,7 @@ sed -i.bak 's,Require local,Require all granted,g' /etc/httpd/conf.d/phpPgAdmin.
 # add postgres password, which is $db_password
 echo "ALTER USER postgres WITH PASSWORD '$db_password';" > /tmp/postgres_user.sql
 sudo -i -u postgres psql -U postgres -f /tmp/postgres_user.sql
+rm -f /tmp/postgres_user.sql
 
 # disable extra login security for web access
 sed -i "s,\$conf\['extra_login_security'\] = true;,\$conf\['extra_login_security'\] = false;,g" /etc/phpPgAdmin/config.inc.php
