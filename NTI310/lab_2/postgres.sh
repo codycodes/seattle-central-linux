@@ -6,8 +6,8 @@ yum install -y epel-release
 yum install -y python-pip python-devel gcc postgresql-server postgresql-devel postgresql-contrib
 
 postgresql-setup initdb
-
-echo "Please enter your new database password (also used as 'postgres' users' password for phpPgAdmin):"
+echo "Please enter your new database password:"
+# echo "Please enter your new database password (also used as 'postgres' users' password for phpPgAdmin):"
 read db_password
 
 echo "CREATE DATABASE myproject;
@@ -26,14 +26,14 @@ yum -y install phpPgAdmin
 sed -i.bak 's,Require local,Require all granted,g' /etc/httpd/conf.d/phpPgAdmin.conf
 
 # add postgres password, which is $db_password
-echo "ALTER USER postgres WITH PASSWORD '$db_password';" > /tmp/postgres_user.sql
+echo "ALTER USER postgres WITH PASSWORD 'postgres';" > /tmp/postgres_user.sql
 sudo -i -u postgres psql -U postgres -f /tmp/postgres_user.sql
 
 # disable extra login security for web access
 sed -i "s,\$conf\['extra_login_security'\] = true;,\$conf\['extra_login_security'\] = false;,g" /etc/phpPgAdmin/config.inc.php
 
 # set md5 authentication
-sed -i.bak 's,ident|peer,md5,g' /var/lib/pgsql/data/pg_hba.conf
+sed -i.bak -r 's,ident|peer,md5,g' /var/lib/pgsql/data/pg_hba.conf
 
 # start postgres + apache & enable for start @ boot
 systemctl enable httpd && systemctl start httpd
