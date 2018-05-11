@@ -11,7 +11,7 @@ yum install -y python-pip python-devel gcc postgresql-server postgresql-devel po
 
 postgresql-setup initdb
 
-# start postgresql now and start it at boot 
+# start postgresql now and start it at boot
 systemctl start postgresql && systemctl enable postgresql
 
 echo "CREATE DATABASE myproject;
@@ -41,7 +41,7 @@ sed -i.bak -r 's,ident|peer,md5,g' /var/lib/pgsql/data/pg_hba.conf
 
 # restart postgres & enable apache for start @ boot
 systemctl enable httpd && systemctl start httpd
-systemctl restart postgres
+systemctl reload postgresql
 
 setenforce 0 # set selinux to permissive now
 sed -i 's,SELINUX=enforcing,SELINUX=disabled,g' /etc/sysconfig/selinux # don't load an selinux policy on boot
