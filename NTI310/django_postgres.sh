@@ -76,7 +76,7 @@ echo "from django.contrib.auth.models import User; User.objects.create_superuser
 
 tree /opt/django/myproject
 
-# change to my user
+# run the following as 'codes'
 sudo -u codes -E sh -c "\\
 source /opt/django/bin/activate && \\
 /opt/django/myproject/manage.py migrate && \\
