@@ -79,5 +79,5 @@ tree /opt/django/myproject
 # run the following as 'codes'
 sudo -u codes -E sh -c "\\
 source /opt/django/bin/activate && \\
-/opt/django/myproject/manage.py migrate && \\
-/opt/django/myproject/manage.py runserver 0:8000 &"
+/opt/django/manage.py migrate && \\
+/opt/django/manage.py runserver 0:8000 &"
