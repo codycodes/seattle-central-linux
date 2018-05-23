@@ -26,7 +26,7 @@ source /opt/django/bin/activate
 pip install django psycopg2
 django-admin.py startproject myproject /opt/django/
 
-chown -R codes . /opt/django
+chown -R codygagnon . /opt/django
 
 external_ip=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H "Metadata-Flavor: Google")
 sed -i.bak "s,ALLOWED_HOSTS \= \[\],ALLOWED_HOSTS \= \['$external_ip'\],g"  /opt/django/myproject/settings.py
@@ -72,13 +72,12 @@ echo "DATABASES = {
     }
 }" >> /opt/django/myproject/settings.py
 
-echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'root@localhost', '$django_password')" | /opt/django/manage.py shell
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'root@localhost', '$django_password')" | /opt/django/myproject/manage.py shell
 
 tree /opt/django/myproject
 
 # change to my user
-su codes
-
-source /opt/django/bin/activate
-/opt/django/myproject/manage.py migrate &&
-/opt/django/myproject/manage.py runserver 0:8000 &
+sudo -u codes -E sh -c "\\
+source /opt/django/bin/activate && \\
+/opt/django/myproject/manage.py migrate && \\
+/opt/django/myproject/manage.py runserver 0:8000 &"
