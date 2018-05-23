@@ -3,8 +3,11 @@
 # Django code meant to run with a postgres backend already setup
 
 # get this out of the way first...
-echo "Please input the internal ip address of your postgresql server below:"
-read internal_ip
+# echo "Please input the internal ip address of your postgresql server below:"
+# read internal_ip
+
+# uses the metadata servers' dns resolver to get internal ip addresses of other hosts on the network
+internal_ip=$(getent hosts django-a.c.nti-310-200617.internal | awk '{ print $1 }')
 
 echo "Please input the database password of your postgresql server below:"
 read db_password
