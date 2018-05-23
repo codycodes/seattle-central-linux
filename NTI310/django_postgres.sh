@@ -26,8 +26,7 @@ source myprojectenv/bin/activate
 pip install django psycopg2
 django-admin.py startproject myproject .
 
-useradd -r django-admin
-chown -R django-admin . /opt/django
+chown -R codes . /opt/django
 
 external_ip=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H "Metadata-Flavor: Google")
 sed -i.bak "s,ALLOWED_HOSTS \= \[\],ALLOWED_HOSTS \= \['$external_ip'\],g"  /opt/django/myproject/settings.py
@@ -74,3 +73,8 @@ echo "DATABASES = {
 }" >> /opt/django/myproject/settings.py
 
 tree myproject
+
+# change to my user
+su codes
+
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'root@localhost', '$db_password')" | /opt/django/manage.py shell
