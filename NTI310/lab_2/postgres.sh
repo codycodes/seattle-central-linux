@@ -39,7 +39,7 @@ sed -i "s,\$conf\['extra_login_security'\] = true;,\$conf\['extra_login_security
 
 # set md5 authentication
 sed -i.bak -r 's,ident|peer,md5,g' /var/lib/pgsql/data/pg_hba.conf
-echo 'host       myproject         myprojectuser       10.142.0.0/20         md5' >> /var/lib/pgsql/data/pg_hba.conf
+echo 'host       all         all       10.142.0.0/20         md5' >> /var/lib/pgsql/data/pg_hba.conf
 
 sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /var/lib/pgsql/data/postgresql.conf
 
