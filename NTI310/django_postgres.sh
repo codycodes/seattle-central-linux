@@ -72,7 +72,7 @@ echo "DATABASES = {
     }
 }" >> /opt/django/myproject/settings.py
 
-echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'root@localhost', '$django_password')" | /opt/django/myproject/manage.py shell
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'root@localhost', '$django_password')" | /opt/django/manage.py shell
 
 tree /opt/django/myproject
 
