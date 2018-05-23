@@ -23,13 +23,11 @@ source myprojectenv/bin/activate
 pip install django psycopg2
 django-admin.py startproject myproject .
 
-useradd -r -s /sbin/nologin django-admin
+useradd -r django-admin
 chown -R django-admin . /opt/django
 
 external_ip=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H "Metadata-Flavor: Google")
-sed "s,ALLOWED_HOSTS \= \[\], ALLOWED_HOSTS \= \['$external_ip'\],g"
-
-cp /opt/django/myproject/settings.py /opt/django/myproject/settings.py.bak
+sed -i.bak "s,ALLOWED_HOSTS \= \[\],ALLOWED_HOSTS \= \['$external_ip'\],g"  /opt/django/myproject/settings.py
 
 python << END
 # inline Python script to change the DATABASES configuration for django
@@ -64,7 +62,7 @@ END
 echo "DATABASES = {
     'default':{
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'nti310',
+        'NAME': 'myproject',
         'USER': 'myprojectuser',
         'PASSWORD': '$db_password',
         'HOST': '$internal_ip',
