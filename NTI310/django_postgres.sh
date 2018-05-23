@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Django code meant to run with a postgres backend already setup
-
-# get this out of the way first...
-# echo "Please input the internal ip address of your postgresql server below:"
-# read internal_ip
+# GCP - Meant to be used in a Google Cloud Project
 
 # uses the metadata servers' dns resolver to get internal ip addresses of other hosts on the network
-internal_ip=$(getent hosts django-a.c.nti-310-200617.internal | awk '{ print $1 }')
-
+echo "Please input the 'name' of your server (e.g. django-a)"
+read your_server_name # stores _your_server_name_ that you want to get the ip address of
+internal_ip=$(getent hosts  $your_server_name$(echo .$(hostname -f |  cut -d "." -f2-)) | awk '{ print $1 }' ) # gets the ip address
 echo "Please input the database password of your postgresql server below:"
 read db_password
+echo "Please input the database password of your django superuser below:"
+read django_password
 
 yum install -y tree
 yum install -y telnet
@@ -19,12 +19,12 @@ yum -y install python-pip
 pip install virtualenv
 pip install --upgrade pip
 
-mkdir /opt/django
-cd /opt/django
-virtualenv myprojectenv
-source myprojectenv/bin/activate
+#--------------------- venv ---------------------
+cd /opt
+virtualenv django
+source /opt/django/bin/activate
 pip install django psycopg2
-django-admin.py startproject myproject .
+django-admin.py startproject myproject /opt/django/
 
 chown -R codes . /opt/django
 
@@ -72,9 +72,13 @@ echo "DATABASES = {
     }
 }" >> /opt/django/myproject/settings.py
 
-tree myproject
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'root@localhost', '$django_password')" | /opt/django/manage.py shell
+
+tree /opt/django/myproject
 
 # change to my user
 su codes
 
-echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'root@localhost', '$db_password')" | /opt/django/manage.py shell
+source /opt/django/bin/activate
+/opt/django/myproject/manage.py migrate &&
+/opt/django/myproject/manage.py runserver 0:8000 &
