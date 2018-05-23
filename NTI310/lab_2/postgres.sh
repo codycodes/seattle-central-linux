@@ -8,6 +8,8 @@ read db_password
 yum install -y epel-release
 # postgres components
 yum install -y python-pip python-devel gcc postgresql-server postgresql-devel postgresql-contrib
+# install the web frontend
+yum -y install phpPgAdmin
 
 postgresql-setup initdb
 
@@ -24,22 +26,20 @@ GRANT ALL PRIVILEGES ON DATABASE myproject TO myprojectuser;" > /tmp/myproject.s
 sudo -i -u postgres psql -U postgres -f /tmp/myproject.sql
 rm -f /tmp/myproject.sql
 
-# install the web frontend
-yum -y install phpPgAdmin
-
-# allow host access from any IP
-sed -i.bak 's,Require local,Require all granted,g' /etc/httpd/conf.d/phpPgAdmin.conf
-
 # add postgres password, which is $db_password
 echo "ALTER USER postgres WITH PASSWORD '$db_password';" > /tmp/postgres_user.sql
 sudo -i -u postgres psql -U postgres -f /tmp/postgres_user.sql
 rm -f /tmp/postgres_user.sql
+
+# allow host access from any IP
+sed -i.bak 's,Require local,Require all granted,g' /etc/httpd/conf.d/phpPgAdmin.conf
 
 # disable extra login security for web access
 sed -i "s,\$conf\['extra_login_security'\] = true;,\$conf\['extra_login_security'\] = false;,g" /etc/phpPgAdmin/config.inc.php
 
 # set md5 authentication
 sed -i.bak -r 's,ident|peer,md5,g' /var/lib/pgsql/data/pg_hba.conf
+echo 'host   myproject         myprojectuser       10.142.0.0/20         md5' >> /var/lib/pgsql/data/pg_hba.conf
 
 # restart postgres & enable apache for start @ boot
 systemctl enable httpd && systemctl start httpd
