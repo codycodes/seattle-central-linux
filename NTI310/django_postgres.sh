@@ -13,7 +13,6 @@ echo "Please input the database password of your django superuser below:"
 read django_password
 
 yum install -y tree
-yum install -y telnet
 yum -y install pip
 yum -y install python-pip
 pip install virtualenv
