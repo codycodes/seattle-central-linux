@@ -42,3 +42,8 @@ sed -i.bak ''
 
 sed -i 's,SELINUX=enforcing,SELINUX=disabled,g' /etc/sysconfig/selinux # don't load an selinux policy on next boot
 setenforce 0 # set selinux to permissive now
+
+echo "Please input the 'name' of your syslog server (e.g. syslog-a)"
+read your_server_name # stores _your_server_name_ that you want to get the ip address of
+internal_ip=$(getent hosts  $your_server_name$(echo .$(hostname -f |  cut -d "." -f2-)) | awk '{ print $1 }' ) # gets the ip address
+echo "*.info;mail.none;authpriv.none;cron.none   @$internal_ip" >> /etc/rsyslog.conf && systemctl restart rsyslog.service

@@ -22,4 +22,9 @@ name=Extra Packages for Centos from NTI-320 7 - $basearch
 baseurl=http://$repo_internal_ip/centos/7/extras/x86_64/Packages/
 enabled=1
 gpgcheck=0
-" >> /etc/yum.repos.d/NTI-320.repo 
+" >> /etc/yum.repos.d/NTI-320.repo
+
+echo "Please input the 'name' of your syslog server (e.g. syslog-a)"
+read your_server_name # stores _your_server_name_ that you want to get the ip address of
+internal_ip=$(getent hosts  $your_server_name$(echo .$(hostname -f |  cut -d "." -f2-)) | awk '{ print $1 }' ) # gets the ip address
+echo "*.info;mail.none;authpriv.none;cron.none   @$internal_ip" >> /etc/rsyslog.conf && systemctl restart rsyslog.service
