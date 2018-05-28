@@ -23,7 +23,7 @@ cd /opt
 virtualenv django
 source /opt/django/bin/activate
 pip install django psycopg2
-dgjango-admin.py startproject myproject /opt/django/
+django-admin.py startproject myproject /opt/django/
 
 adduser codes
 
@@ -83,3 +83,5 @@ sudo -u codes -E sh -c "\\
 source /opt/django/bin/activate && \\
 /opt/django/manage.py migrate && \\
 /opt/django/manage.py runserver 0:8000 &"
+
+echo "Please go to the URL: http://$external_ip:8000/admin to login to your django instance"
