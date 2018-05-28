@@ -86,4 +86,5 @@ source /opt/django/bin/activate && \\
 /opt/django/manage.py migrate && \\
 /opt/django/manage.py runserver 0:8000 &"
 
+external_ip=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H "Metadata-Flavor: Google")
 echo "Please go to the URL: http://$external_ip:8000/admin to login to your django instance"
