@@ -7,7 +7,7 @@
 echo "Please input the 'name' of your postgres server (e.g. postgres-a):"
 read your_server_name # stores _your_server_name_ that you want to get the ip address of
 internal_ip=$(getent hosts  $your_server_name$(echo .$(hostname -f |  cut -d "." -f2-)) | awk '{ print $1 }' ) # gets the ip address
-echo "Your internal_ip is $internal_ip" 
+echo "Your internal_ip is $internal_ip"
 echo "Please input the database password of your postgresql server below:"
 read db_password
 echo "Please input the superuser password to create for django below:"
