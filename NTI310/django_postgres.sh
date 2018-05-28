@@ -12,6 +12,8 @@ read db_password
 echo "Please input the superuser password to create for django below:"
 read django_password
 
+echo "Now installing django & connecting to postgres server..."
+
 yum install -y tree
 yum -y install pip
 yum -y install python-pip
