@@ -37,9 +37,11 @@ sed -i.bak 's,Require local,Require all granted,g' /etc/httpd/conf.d/phpPgAdmin.
 # disable extra login security for web access
 sed -i "s,\$conf\['extra_login_security'\] = true;,\$conf\['extra_login_security'\] = false;,g" /etc/phpPgAdmin/config.inc.php
 
-# set md5 authentication
+internal_ip=$(hostname -I)
+ip_network=$(echo $internal_ip | awk -F. '{ print $1"."$2".0.0" }')
+# set md5 authentication for hosts on the network
 sed -i.bak -r 's,ident|peer,md5,g' /var/lib/pgsql/data/pg_hba.conf
-echo 'host    all             all             10.142.0.0/20           md5' >> /var/lib/pgsql/data/pg_hba.conf
+echo "host    all             all             $ip_network/20           md5" >> /var/lib/pgsql/data/pg_hba.conf
 
 sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /var/lib/pgsql/data/postgresql.conf
 
@@ -49,3 +51,6 @@ systemctl reload postgresql
 
 setenforce 0 # set selinux to permissive now
 sed -i 's,SELINUX=enforcing,SELINUX=disabled,g' /etc/sysconfig/selinux # don't load an selinux policy on boot
+
+external_ip=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H "Metadata-Flavor: Google")
+echo "Please go to the URL: http://$external_ip/phpPgAdmin to login to your postgres instance"
