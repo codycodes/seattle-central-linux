@@ -4,6 +4,8 @@
 echo "Please enter your new database password (also used as 'postgres' users' password for phpPgAdmin):"
 read db_password
 
+echo "Now installing postgres..."
+
 # contains the extra packages that we need
 yum install -y epel-release
 # postgres components
