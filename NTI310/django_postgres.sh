@@ -23,9 +23,11 @@ cd /opt
 virtualenv django
 source /opt/django/bin/activate
 pip install django psycopg2
-django-admin.py startproject myproject /opt/django/
+dgjango-admin.py startproject myproject /opt/django/
 
-chown -R codygagnon . /opt/django
+adduser codes
+
+chown -R codes . /opt/django
 
 external_ip=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H "Metadata-Flavor: Google")
 sed -i.bak "s,ALLOWED_HOSTS \= \[\],ALLOWED_HOSTS \= \['$external_ip'\],g"  /opt/django/myproject/settings.py
@@ -71,7 +73,8 @@ echo "DATABASES = {
     }
 }" >> /opt/django/myproject/settings.py
 
-echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'root@localhost', '$django_password')" | /opt/django/manage.py shell
+# deletes and creates the superuser
+echo "from django.contrib.auth.models import User; User.objects.filter(email='root@example.com').delete(); User.objects.create_superuser('root', 'root@example.com', '$django_password')" | python /opt/django/manage.py shell
 
 tree /opt/django/myproject
 
