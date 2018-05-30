@@ -1,0 +1,32 @@
+- name: Create LDAP server from shell script
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    service_account_email: your_service_account@here.iam.gserviceaccount.com
+    credentials_file: your/credentials/path/here.json
+    project_id: your-project-id-here
+    zone: us-west1-b
+    machine_type: f1-micro
+    image_family: centos-7
+    image: centos-7
+
+  tasks:
+
+   - name: Launch instances
+     gce:
+         instance_names: ldap-g
+         machine_type: "{{ machine_type }}"
+         image: "{{ image }}"
+         image_family: "{{ image_family }}"
+         zone: "{{ zone }}"
+         service_account_email: "{{ service_account_email }}"
+         credentials_file: "{{ credentials_file }}"
+         project_id: "{{ project_id }}"
+         tags:
+           - "http-server"
+         metadata : '{"startup-script" : "curl https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/lab_1/lab_1_ldap_server.sh > ldap.sh; chmod +x ./ldap.sh; ./ldap.sh"}'
+     register: gce
+
+   - debug: msg="{{ gce.instance_data[0].private_ip }}"
