@@ -25,16 +25,20 @@ This package contains customization for a monitoring server, a trending server a
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/lib64/nagios/plugins/
 mkdir -p %{buildroot}/etc/nrpe.d/
+mkdir -p %{buildroot}/tmp/
 
 install -m 0755 nti-sanity.sh %{buildroot}/usr/lib64/nagios/plugins/
 
 install -m 0744 nti320.cfg %{buildroot}/etc/nrpe.d/
+
+install -m 0755 snmp_nrpe_rpm.sh %{buildroot}/tmp/
 
 %clean
 
 %files
 %defattr(-,root,root)
 /usr/lib64/nagios/plugins/nti-sanity.sh
+/tmp/snmp_nrpre_rpm.sh
 
 
 %config
@@ -49,7 +53,19 @@ install -m 0744 nti320.cfg %{buildroot}/etc/nrpe.d/
 touch /thisworked
 systemctl enable snmpd
 systemctl start snmpd
-sed -i 's,/dev/hda1,/dev/sda1,'  /etc/nagios/nrpe.cfg
+sed -i.bak 's,/dev/hda1,/dev/sda1,'  /etc/nagios/nrpe.cfg
+
+echo "Enter the internal ip address of your nagios server: "
+read nagios_internal_ip
+sed -i "s/allowed_hosts=127.0.0.1/allowed_hosts=127.0.0.1, $nagios_internal_ip/g" /etc/nagios/nrpe.cfg
+systemctl restart nrpe
+# will retrieve all variables under the localhost using snmp version 1
+snmpwalk -v 1 -c public -O e 127.0.0.1
+
+echo "Please input the 'name' of your syslog server (e.g. syslog-a)"
+read your_server_name # stores _your_server_name_ that you want to get the ip address of
+internal_ip=$(getent hosts  $your_server_name$(echo .$(hostname -f |  cut -d "." -f2-)) | awk '{ print $1 }' ) # gets the ip address
+echo "*.info;mail.none;authpriv.none;cron.none   @$internal_ip" >> /etc/rsyslog.conf && systemctl restart rsyslog.service
 
 %postun
 rm /thisworked
