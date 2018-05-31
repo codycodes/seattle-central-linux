@@ -1,18 +1,19 @@
 #!/bin/bash
 # get yum_installed and install it
+curl https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/resources/yum_installed >> yum_installed
+
+for i in $(cat yum_installed); do
+  yum -y install $i
+done
 
 # configuration for snmp-nrpe-a
 #-------------------------------------NRPE
-yum -y install nrpe nagios-plugins
 cp /etc/nagios/nrpe.cfg /etc/nagios/nrpe.cfg.bak
 echo "Enter the internal ip address of your nagios-a server: "
 read internal_ip
 sed -i "s/allowed_hosts=127.0.0.1/allowed_hosts=127.0.0.1, $internal_ip/g" /etc/nagios/nrpe.cfg
 systemctl restart nrpe
 #-------------------------------------SNMP
-yum -y install net-snmp
-# installs a package which gives us the snmpwalk command
-yum -y install net-snmp-utils
 # start snmpd and ensure that it starts on boot by simlinking to the relevant location
 systemctl enable snmpd && systemctl start snmpd
 # will retrieve all variables under the localhost using snmp version 1
