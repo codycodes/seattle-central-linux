@@ -38,7 +38,7 @@ install -m 0755 snmp_nrpe_rpm.sh %{buildroot}/tmp/
 %files
 %defattr(-,root,root)
 /usr/lib64/nagios/plugins/nti-sanity.sh
-/tmp/snmp_nrpre_rpm.sh
+/tmp/snmp_nrpe_rpm.sh
 
 
 %config
