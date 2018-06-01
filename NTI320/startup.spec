@@ -31,8 +31,6 @@ install -m 0755 nti-sanity.sh %{buildroot}/usr/lib64/nagios/plugins/
 
 install -m 0744 nti320.cfg %{buildroot}/etc/nrpe.d/
 
-install -m 0755 snmp_nrpe_rpm.sh %{buildroot}/tmp/
-
 %clean
 
 %files
@@ -51,6 +49,7 @@ install -m 0755 snmp_nrpe_rpm.sh %{buildroot}/tmp/
 %post
 
 touch /thisworked
+
 systemctl enable snmpd
 systemctl start snmpd
 sed -i.bak 's,/dev/hda1,/dev/sda1,'  /etc/nagios/nrpe.cfg
