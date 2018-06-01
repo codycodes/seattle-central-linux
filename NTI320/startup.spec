@@ -36,7 +36,6 @@ install -m 0744 nti320.cfg %{buildroot}/etc/nrpe.d/
 %files
 %defattr(-,root,root)
 /usr/lib64/nagios/plugins/nti-sanity.sh
-/tmp/snmp_nrpe_rpm.sh
 
 
 %config
