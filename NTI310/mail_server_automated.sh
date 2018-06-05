@@ -18,7 +18,9 @@ cp mail.nti310.com.key mail.nti310.com.crt /etc/ssl/
 
 cp /etc/exim/exim.conf{,.orig}
 
-#TODO: do the online tutorial
+#TODO: do the online tutorial for exim ✔️
+
+curl https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/exim_configuration > /etc/exim/exim.conf
 
 systemctl start exim && systemctl enable exim
 systemctl status exim
