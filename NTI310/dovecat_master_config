@@ -111,4 +111,8 @@ service dict {
     #user =
     #group =
   }
+unix_listener auth-client {
+    mode = 0660
+    user = exim
+  }
 }
