@@ -1,6 +1,8 @@
 #!/bin/bash
 
-yum install exim mailx
+yum update
+yum install epel-release
+yum install -y exim mailx dovecot
 
 #TODO:  Note that "wgeting" exim and dovecot config files is fine to complete the configuration.
 
@@ -14,7 +16,7 @@ cp /etc/exim/exim.conf{,.orig}
 
 #TODO: do the online tutorial
 
-systemctl start exim
+systemctl start exim && systemctl enable exim
 systemctl status exim
 
 # sdiff exim.conf exim.conf.orig
@@ -36,3 +38,8 @@ tail /var/log/exim/main.log # follow the mail messages
 # 2018-05-30 21:54:54 1fO8tF-0000XZ-UR == person@mydomain.com R=dnslookup T=remote_smtp def
 # er (110): Connection timed out
 # 2018-05-30 21:55:11 1fO8xd-0000ZR-Ec H=mail.mydomain.com [65.254.254.54] Connection timed out
+
+# TODO: finish dovecot config
+
+systemctl start dovecot && systemctl enable dovecot
+systemctl status dovecot
