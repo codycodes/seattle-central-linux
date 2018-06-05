@@ -23,7 +23,6 @@ service imap-login {
   # is faster. <doc/wiki/LoginProcess.txt>
   #service_count = 1
   # Number of processes to always keep waiting for more connections.
-}
   #process_min_avail = 0
 
   # If you set service_count=0, you probably need to grow this.
@@ -88,8 +87,8 @@ service auth {
   }
 
   unix_listener auth-client {
-      mode = 0660
-      user = exim
+    mode = 0660
+    user = exim
   }
 
   # Postfix smtp-auth
