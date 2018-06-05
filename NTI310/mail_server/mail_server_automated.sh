@@ -1,7 +1,7 @@
 #!/bin/bash
 
 yum update
-yum install epel-release
+yum install -y epel-release
 yum install -y exim mailx dovecot
 
 mkdir /root/SSL/mail.nti310.com -p
