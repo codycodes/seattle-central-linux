@@ -1,6 +1,6 @@
 #!/bin/bash
 
-yum update
+yum update -y
 yum install -y epel-release
 yum install -y exim mailx dovecot
 
