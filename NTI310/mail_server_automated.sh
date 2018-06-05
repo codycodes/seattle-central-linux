@@ -20,6 +20,8 @@ cp /etc/exim/exim.conf{,.orig}
 
 #TODO: do the online tutorial for exim ✔️
 
+mkdir $HOME/MailDir
+
 curl https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/exim_configuration > /etc/exim/exim.conf
 
 systemctl start exim && systemctl enable exim
@@ -28,7 +30,7 @@ systemctl status exim
 # sdiff exim.conf exim.conf.orig
 
 # TODO: replace with your user
-# echo "test" | /usr/sbin/exim -v person@mydomain.com
+# echo "test" | /usr/sbin/exim -v codygagnon@nti310.com
 
 tail /var/log/exim/main.log # follow the mail messages
 
@@ -46,6 +48,12 @@ tail /var/log/exim/main.log # follow the mail messages
 # 2018-05-30 21:55:11 1fO8xd-0000ZR-Ec H=mail.mydomain.com [65.254.254.54] Connection timed out
 
 # TODO: finish dovecot config
+cp /etc/dovecot/conf.d/10-{,.orig}
+
+curl > #dovecot_ssl_config /etc/dovecot/conf.d/10-ssl.conf
+curl > # dovecat_auth_config /etc/dovecot/conf.d/10-auth.conf
+curl > # dovecat_mail_config /etc/dovecot/conf.d/10-mail.conf
+curl > # dovecat_master_config /etc/dovecot/conf.d/10-master.conf
 
 systemctl start dovecot && systemctl enable dovecot
 systemctl status dovecot
