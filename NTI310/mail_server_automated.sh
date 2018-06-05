@@ -8,8 +8,12 @@ yum install -y exim mailx dovecot
 
 mkdir /root/SSL/mail.nti310.com -p
 cd /root/SSL/mail.nti310.com
-#TODO: provide state, city, and so on in your arguments.
-openssl req -nodes -x509 -newkey rsa:2048 -keyout mail.nti310.com.key -out mail.nti310.com.crt -days 365
+#TODO: provide state, city, and so on in your arguments. ✔️
+openssl req \
+-nodes -x509 -days 365 -sha256 \
+-subj '/C=US/ST=Washington/L=Seattle/O=Seattle Central College/CN=www.cody.codes' \
+-newkey rsa:2048 -keyout mail.nti310.com.key -out mail.nti310.com.crt
+
 cp mail.nti310.com.key mail.nti310.com.crt /etc/ssl/
 
 cp /etc/exim/exim.conf{,.orig}
