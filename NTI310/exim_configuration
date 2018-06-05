@@ -866,7 +866,7 @@ procmail:
 
 local_delivery:
   driver = appendfile
-  directory = $HOME/MailDir
+  directory = $home/MailDir
   maildir_format
   maildir_use_size_file
   delivery_date_add
