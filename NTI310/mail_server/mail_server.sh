@@ -22,7 +22,7 @@ cp /etc/exim/exim.conf{,.orig} # create a backup of the file (not a directory) e
 
 mkdir $HOME/MailDir
 
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/exim_configuration" > /etc/exim/exim.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/mail_server/exim_configuration" > /etc/exim/exim.conf
 
 systemctl start exim && systemctl enable exim
 systemctl status exim
@@ -31,7 +31,8 @@ useradd -m test
 echo 'test:test' | chpasswd # add password of "test" to user test
 
 # TODO: replace with your user ✔️
-echo "test" | /usr/sbin/exim -v codygagnon@nti310.com
+echo "test" | /usr/sbin/exim -v test@nti310.com # locally test for mail delivery
+echo "test" | /usr/sbin/exim -v test@gmail.com # test remote mail delivery which should fail
 
 tail /var/log/exim/main.log # follow the mail messages
 
@@ -51,10 +52,10 @@ tail /var/log/exim/main.log # follow the mail messages
 # TODO: finish dovecot config ✔️
 
 cp -r /etc/dovecot/conf.d{,.orig} # recursively create a backup of the directory
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/dovecot_ssl_config" > /etc/dovecot/conf.d/10-ssl.conf
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/dovecot_auth_config" > /etc/dovecot/conf.d/10-auth.conf
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/dovecot_mail_config" > /etc/dovecot/conf.d/10-mail.conf
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/dovecot_master_config" > /etc/dovecot/conf.d/10-master.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/mail_server/dovecot_ssl_config" > /etc/dovecot/conf.d/10-ssl.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/mail_server/dovecot_auth_config" > /etc/dovecot/conf.d/10-auth.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/mail_server/dovecot_mail_config" > /etc/dovecot/conf.d/10-mail.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/mail_server/dovecot_master_config" > /etc/dovecot/conf.d/10-master.conf
 
 systemctl start dovecot && systemctl enable dovecot
 systemctl status dovecot
