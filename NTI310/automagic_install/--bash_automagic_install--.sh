@@ -16,4 +16,7 @@ gcloud compute instances create nfs-a \
     --metadata-from-file startup-script="/Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_3_nfs/nfs_server.sh"
 
 nfs_server_internal_ip=$(gcloud compute instances list | grep nfs-a | awk '{ print $4 }' | tail -1)
-echo $nfs_server_internal_ip
+echo "your nfs-a internal ip is..."$nfs_server_internal_ip
+
+# I use gsed on my mac since it's most similar to sed on Linux
+gsed -i "s,nfs_server_ip,$nfs_server_internal_ip" /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_3_nfs/nfs_client.sh
