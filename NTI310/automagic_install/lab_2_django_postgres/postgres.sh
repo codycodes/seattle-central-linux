@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# set variables first (faster)
-echo "Please enter your new database password (also used as 'postgres' users' password for phpPgAdmin):"
-read db_password
+# set variables first (placeholder)
+db_password="P@ssw0rd1"
 
 echo "Now installing postgres..."
 
