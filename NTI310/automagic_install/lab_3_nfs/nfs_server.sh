@@ -16,6 +16,6 @@ systemctl start nfs-lock
 systemctl start nfs-idmap
 cd /var/nfsshare/
 echo "/var/nfsshare/home_dirs *(rw,sync,no_all_squash)
-sshare/devstuff  *(rw,sync,no_all_squash)
-sshare/testing   *(rw,sync,no_all_squash)" >> /etc/exports
+/var/nfsshare/devstuff  *(rw,sync,no_all_squash)
+/var/nfsshare/testing   *(rw,sync,no_all_squash)" >> /etc/exports
 systemctl restart nfs-server
