@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# LDAP Server + LDAP Client
-
-# Django Server + Posgres server and will resolve dependancies.
-
 echo "Welcome! This code will launch nfs and ldap client + servers as well as Postgres and Django"
 
 # NFS Server + NFS Client
@@ -47,9 +43,18 @@ echo "your ldap-a internal ip is $ldap_server_internal_ip" >> /Users/codes/__COD
 
 gsed -i "s,ldap_server_ip,$ldap_server_internal_ip" /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_1_ldap/lab_1_ldap_client.sh
 
-gcloud compute instances create nfs-client-a \
+gcloud compute instances create ldap-client-a \
     --zone us-west1-b \
     --machine-type f1-micro \
     --image-family ubuntu-1604-lts \
     --image-project ubuntu-os-cloud \
     --metadata-from-file startup-script="/Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_1_ldap/lab_1_ldap_client.sh"
+
+# Django Server + Posgres server and will resolve dependancies.
+
+gcloud compute instances create postgres-a \
+    --zone us-west1-b \
+    --machine-type f1-micro \
+    --image-family centos-7 \
+    --image-project centos-cloud \
+    --metadata-from-file startup-script="/Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_2_django_postgres/postgres.sh"
