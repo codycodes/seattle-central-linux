@@ -57,4 +57,20 @@ gcloud compute instances create postgres-a \
     --machine-type f1-micro \
     --image-family centos-7 \
     --image-project centos-cloud \
+    --tags "http-server" \
     --metadata-from-file startup-script="/Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_2_django_postgres/postgres.sh"
+
+postgres_server_internal_ip=$(gcloud compute instances list | grep postgres-a | awk '{ print $4 }' | tail -1)
+
+echo "your postgres-a internal ip is $postgres_server_internal_ip"
+echo "your postgres-a internal ip is $postgres_server_internal_ip" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_internal_ip_servers.txt
+
+gsed -i "s,postgres_server_ip,$postgres_server_internal_ip" /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_2_django_postgres/django.sh
+
+gcloud compute instances create django-a \
+    --zone us-west1-b \
+    --machine-type f1-micro \
+    --image-family centos-7 \
+    --image-project centos-cloud \
+    --tags "http-server" \
+    --metadata-from-file startup-script="/Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_2_django_postgres/django.sh"
