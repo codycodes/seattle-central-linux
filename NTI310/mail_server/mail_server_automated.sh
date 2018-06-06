@@ -24,6 +24,7 @@ useradd -m test
 echo 'test:test' | chpasswd # add password of "test" to user test
 
 echo "test" | /usr/sbin/exim -v test@nti310.com # locally test for mail delivery
+sleep 30
 echo "test" | /usr/sbin/exim -v test@gmail.com # test remote mail delivery which should fail
 
 tail /var/log/exim/main.log # follow the mail messages
