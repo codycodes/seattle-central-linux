@@ -1,9 +1,7 @@
 #!/bin/bash
-debconf_url='https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/lab_1/debconf'
+debconf_url='https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/lab_1_ldap/debconf'
 wget --no-verbose -P /tmp/ $debconf_url
-echo -n "Enter the internal ip address of your LDAP server: "
-read internal_ip
-sed -i.bak "\,ldap://,s,$,$internal_ip," /tmp/debconf # add internal ip to debconf
+sed -i.bak "\,ldap://,s,$,ldap_server_ip," /tmp/debconf # add internal ip to debconf
 while read line; do echo "$line" | debconf-set-selections; done < /tmp/debconf # read each line as input to set debconf
 
 export DEBIAN_FRONTEND=noninteractive
