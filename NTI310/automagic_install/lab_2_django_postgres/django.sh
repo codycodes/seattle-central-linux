@@ -69,6 +69,7 @@ echo "DATABASES = {
     }
 }" >> /opt/django/myproject/settings.py
 
+python /opt/django/manage.py migrate
 # deletes and creates the superuser
 echo "from django.contrib.auth.models import User; User.objects.filter(email='root@example.com').delete(); User.objects.create_superuser('root', 'root@example.com', '$django_password')" | python /opt/django/manage.py shell
 
@@ -80,5 +81,4 @@ echo "Please go to the URL: http://$external_ip:8000/admin to login to your djan
 # run the following as 'codes'
 sudo -u codes -E sh -c "\\
 source /opt/django/bin/activate && \\
-/opt/django/manage.py migrate && \\
 /opt/django/manage.py runserver 0:8000 &"
