@@ -1,5 +1,5 @@
 #!/bin/bash
-debconf_url='https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/lab_1/debconf'
+debconf_url='https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/interactive_install/lab_1_ldap/debconf'
 wget --no-verbose -P /tmp/ $debconf_url
 echo -n "Enter the internal ip address of your LDAP server: "
 read internal_ip
