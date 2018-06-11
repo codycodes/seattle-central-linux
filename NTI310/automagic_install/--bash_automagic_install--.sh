@@ -19,8 +19,8 @@ ldap_server_external_ip=$(gcloud compute instances list | grep ldap-a | awk '{ p
 echo "your ldap-a internal ip is $ldap_server_internal_ip"
 echo "your ldap-a internal ip is $ldap_server_internal_ip" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_internal_ip_servers.txt
 
-echo "your ldap-a url is $ldap_server_external_ip/phpldapadmin"
-echo "your ldap-a url is $ldap_server_external_ip/phpldapadmin" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_external_ip_servers.txt
+echo "your ldap-a url is http://$ldap_server_external_ip/phpldapadmin"
+echo "your ldap-a url is http://$ldap_server_external_ip/phpldapadmin" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_external_ip_servers.txt
 
 
 # NFS Server
@@ -71,8 +71,8 @@ postgres_server_external_ip=$(gcloud compute instances list | grep postgres-a | 
 echo "your postgres-a internal ip is $postgres_server_internal_ip"
 echo "your postgres-a internal ip is $postgres_server_internal_ip" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_internal_ip_servers.txt
 
-echo "your postgres-a url is $postgres_server_external_ip/phpPgAdmin"
-echo "your postgres-a url is $postgres_server_external_ip/phpPgAdmin" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_external_ip_servers.txt
+echo "your postgres-a url is http://$postgres_server_external_ip/phpPgAdmin"
+echo "your postgres-a url is http://$postgres_server_external_ip/phpPgAdmin" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_external_ip_servers.txt
 
 gsed -i "s,postgres_server_ip,$postgres_server_internal_ip," /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_2_django_postgres/django.sh
 
@@ -86,8 +86,8 @@ gcloud compute instances create django-a \
 
 django_server_external_ip=$(gcloud compute instances list | grep django-a | awk '{ print $5 }' | tail -1)
 
-echo "your django-a url is $django_server_external_ip:8000/admin"
-echo "your django-a url is $django_server_external_ip:8000/admin" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_external_ip_servers.txt
+echo "your django-a url is http://$django_server_external_ip:8000/admin"
+echo "your django-a url is http://$django_server_external_ip:8000/admin" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_external_ip_servers.txt
 
 # Mail server
 
