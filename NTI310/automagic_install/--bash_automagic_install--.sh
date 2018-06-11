@@ -87,3 +87,15 @@ django_server_external_ip=$(gcloud compute instances list | grep django-a | awk 
 
 echo "your django-a url is $django_server_external_ip:8000/admin"
 echo "your django-a url is $django_server_external_ip:8000/admin" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_external_ip_servers.txt
+
+gcloud compute instances create mail-a \
+    --zone us-west1-b \
+    --machine-type f1-micro \
+    --image-family centos-7 \
+    --image-project centos-cloud \
+    --metadata-from-file startup-script="/Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_4_mail_server/mail_server_automated.sh"
+
+mail_server_internal_ip=$(gcloud compute instances list | grep postgres-a | awk '{ print $4 }' | tail -1)
+
+echo "your mail-a internal ip is $mail_server_internal_ip"
+echo "your mail-a internal ip is $mail_server_internal_ip" >> /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/instance_internal_ip_servers.txt
