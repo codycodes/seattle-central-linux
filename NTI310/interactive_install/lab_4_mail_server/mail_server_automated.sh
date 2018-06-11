@@ -15,7 +15,7 @@ openssl req \
 cp mail.nti310.com.key mail.nti310.com.crt /etc/ssl/
 
 cp /etc/exim/exim.conf{,.orig} # create a backup of the file (not a directory) exim.conf
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/mail_server/exim_configuration" > /etc/exim/exim.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/interactive_install/ldab_4_mail_server/exim_configuration" > /etc/exim/exim.conf
 
 systemctl start exim && systemctl enable exim
 systemctl status exim
