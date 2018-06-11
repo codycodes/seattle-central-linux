@@ -69,6 +69,7 @@ echo "DATABASES = {
     }
 }" >> /opt/django/myproject/settings.py
 
+# migrate before creating a superuser
 python /opt/django/manage.py migrate
 # deletes and creates the superuser
 echo "from django.contrib.auth.models import User; User.objects.filter(email='root@example.com').delete(); User.objects.create_superuser('root', 'root@example.com', '$django_password')" | python /opt/django/manage.py shell
