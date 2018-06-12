@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Welcome! This code will launch nfs and ldap client + servers as well as Postgres and Django and a mail server"
+echo "Welcome to the NTI310 automagic_install script!! This code will launch nfs and ldap client + servers as well as Postgres and Django and a mail server"
 
 
 # LDAP Server
