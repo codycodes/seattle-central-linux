@@ -26,6 +26,10 @@ echo "your repo-a external ip is http://$repo_server_external_ip"
 echo "your repo-a external ip is http://$repo_server_external_ip" >> $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/instance_internal_ip_servers.txt
 
 
+# TODO:Rsyslog Server
+
+syslog_server_internal_ip=$(gcloud compute instances list | grep syslog-a | awk '{ print $4 }' | tail -1)
+
 # Build Server
 
 gcloud compute instances create build-a \
@@ -36,8 +40,11 @@ gcloud compute instances create build-a \
     --metadata-from-file startup-script="$user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_4_build/build_server.sh"
 
 gsed -i "s,repo_internal_ip,$repo_server_internal_ip," $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_4_build/build_server.sh
+gsed -i "s,syslog_internal_ip,$syslog_server_internal_ip," $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_4_build/build_server.sh
 
-#
+# TODO: Nagios
+# TODO: Cacti
+
 # # I use gsed on my mac since it's most similar to sed on Linux
 # gsed -i "s,nfs_server_ip,$nfs_server_internal_ip," /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_5_nfs_ldap/ldap_nfs_client.sh
 # gsed -i "s,ldap_server_ip,$ldap_server_internal_ip," /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_5_nfs_ldap/ldap_nfs_client.sh
