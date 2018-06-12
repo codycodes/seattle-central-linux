@@ -19,7 +19,7 @@ sed -i 's/^/#/' /etc/httpd/conf.d/welcome.conf
 chown -R apache:apache /repos/
 systemctl restart httpd
 
-rpm_url=''
-wget --no-verbose -P /repos/centos/7/extras/x86_64/Packages/ $rpm_url
+
+wget --no-verbose -P /repos/centos/7/extras/x86_64/Packages/ rpm_url
 
 createrepo --update /repos/centos/7/extras/x86_64/Packages/
