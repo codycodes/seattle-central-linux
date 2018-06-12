@@ -26,7 +26,14 @@ echo "your repo-a external ip is http://$repo_server_external_ip"
 echo "your repo-a external ip is http://$repo_server_external_ip" >> $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/instance_internal_ip_servers.txt
 
 
-# TODO:Rsyslog Server
+# Rsyslog Server
+
+gcloud compute instances create rsyslog-a \
+    --zone us-west1-b \
+    --machine-type f1-micro \
+    --image-family centos-7 \
+    --image-project centos-cloud \
+    --metadata-from-file startup-script="$user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_6_rsyslog/rsyslog.sh"
 
 syslog_server_internal_ip=$(gcloud compute instances list | grep syslog-a | awk '{ print $4 }' | tail -1)
 
