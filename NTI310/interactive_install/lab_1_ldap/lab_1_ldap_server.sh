@@ -44,7 +44,7 @@ olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external, 
 # Generate cert for LDAP
 openssl req -new -x509 -nodes -out /etc/openldap/certs/nti310ldapcert.pem -keyout /etc/openldap/certs/nti310ldapkey.pem -days 365 \
 -subj "/C=US/ST=WA/L=Seattle/O=SCC/OU=IT/CN=nti310.local"
-chown -R ldap . /etc/openldap/certs/nti310ldapkey.pem
+chown -R ldap. /etc/openldap/certs/nti310ldapkey.pem
 echo 'dn: cn=config
 changetype: modify
 replace: olcTLSCertificateFile
