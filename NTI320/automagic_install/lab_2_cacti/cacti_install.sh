@@ -8,11 +8,13 @@ systemctl enable httpd && systemctl start httpd
 systemctl enable snmpd && systemctl start snmpd
 
 echo -n "Enter the password you'd like to use for MariaDB: "
-read db_password
-mysqladmin password "$db_password" # set the mysql database password
+# read db_password
+# mysqladmin password "$db_password" # set the mysql database password
+db_password="P@ssw0rd1"
 
-echo -n "Enter the password you'd like to use for cacti: "
-read cacti_password
+# echo -n "Enter the password you'd like to use for cacti: "
+# read cacti_password
+cacti_password="P@ssw0rd1"
 
 echo "create database cacti;
 GRANT ALL ON cacti.* TO cacti@localhost IDENTIFIED BY '$cacti_password';
@@ -43,7 +45,12 @@ sed -i.bak ''
 sed -i 's,SELINUX=enforcing,SELINUX=disabled,g' /etc/sysconfig/selinux # don't load an selinux policy on next boot
 setenforce 0 # set selinux to permissive now
 
-echo "Please input the 'name' of your syslog server (e.g. syslog-a)"
-read your_server_name # stores _your_server_name_ that you want to get the ip address of
-internal_ip=$(getent hosts  $your_server_name$(echo .$(hostname -f |  cut -d "." -f2-)) | awk '{ print $1 }' ) # gets the ip address
-echo "*.info;mail.none;authpriv.none;cron.none   @$internal_ip" >> /etc/rsyslog.conf && systemctl restart rsyslog.service
+echo "[nti-320]
+name=Extra Packages for Centos from NTI-320 7
+# Note, this is putting repodata at packages instead of 7 and our path is a hack around that.
+baseurl=http://repo_internal_ip/centos/7/extras/x86_64/Packages/
+enabled=1
+gpgcheck=0
+" >> /etc/yum.repos.d/NTI-320.repo
+
+echo "*.info;mail.none;authpriv.none;cron.none   @$syslog_internal_ip" >> /etc/rsyslog.conf && systemctl restart rsyslog.service
