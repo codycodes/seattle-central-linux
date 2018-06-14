@@ -1,10 +1,13 @@
 #!/bin/bash
+apt-get update
+
+export DEBIAN_FRONTEND=noninteractive
 debconf_url='https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/ldab_5_nfs_ldap/debconf'
 wget --no-verbose -P /tmp/ $debconf_url
 sed -i.bak "\,ldap://,s,$,ldap_server_ip," /tmp/debconf # add internal ip to debconf
 while read line; do echo "$line" | debconf-set-selections; done < /tmp/debconf # read each line as input to set debconf
 
-export DEBIAN_FRONTEND=noninteractive
+
 apt-get --yes install libpam-ldap nscd
 unset DEBIAN_FRONTEND
 
