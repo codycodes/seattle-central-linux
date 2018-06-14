@@ -1,4 +1,18 @@
+instance_info="$(gcloud compute instances list)"
+for client_name in $(echo "$instance_info" | awk 'NR >= 2 { print $1 }');
+do
+  nrpe_internal_ip=$(echo "$instance_info" | grep $client_name | awk '{ print $4 }')
+  echo "$client_name" "$nrpe_internal_ip"
+done;
 
+# Old worse code
+# for server_name in $(gcloud compute instances list | awk 'NR >= 2 { print $1 }');
+# do
+#   server_details="$(gcloud compute instances list | grep $server_name);"
+#   client_name=$(echo $server_details | awk '{ print $1 }')
+#   nrpe_internal_ip=$(echo $server_details | awk '{ print $4 }')
+#   echo $client_name $nrpe_internal_ip
+# done;
 
 echo '# a minimal configuration for '$client_name'
 # Host Definition
