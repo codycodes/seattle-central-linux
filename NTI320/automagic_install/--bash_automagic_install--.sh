@@ -2,8 +2,11 @@
 
 echo "Welcome to the NTI320 automagic_install script! This code will launch nfs and ldap client + servers as well as Postgres and Django and a mail server"
 
+# bash /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/--bash_automagic_install--.sh
+
 user_filepath='/Users/codes/__CODE'
 rpm_url=''
+
 
 # Repo Server
 
@@ -37,7 +40,11 @@ gcloud compute instances create rsyslog-a \
 
 syslog_server_internal_ip=$(gcloud compute instances list | grep syslog-a | awk '{ print $4 }' | tail -1)
 
+
 # Build Server
+
+gsed -i "s,repo_internal_ip,$repo_server_internal_ip," $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_4_build/build_server.sh
+gsed -i "s,syslog_internal_ip,$syslog_server_internal_ip," $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_4_build/build_server.sh
 
 gcloud compute instances create build-a \
     --zone us-west1-b \
@@ -46,23 +53,31 @@ gcloud compute instances create build-a \
     --image-project centos-cloud \
     --metadata-from-file startup-script="$user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_4_build/build_server.sh"
 
-gsed -i "s,repo_internal_ip,$repo_server_internal_ip," $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_4_build/build_server.sh
-gsed -i "s,syslog_internal_ip,$syslog_server_internal_ip," $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_4_build/build_server.sh
 
-# TODO: Nagios
+# Nagios Server
+
+gsed -i "s,repo_internal_ip,$repo_server_internal_ip," $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_1_nagios/nagios_server.sh
+gsed -i "s,syslog_internal_ip,$syslog_server_internal_ip," $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/lab_1_nagios/nagios_server.sh
+
+gcloud compute instances create nagios-a \
+    --zone us-west1-b \
+    --machine-type f1-micro \
+    --image-family ubuntu-1604-lts \
+    --image-project ubuntu-os-cloud \
+    --metadata-from-file startup-script="$user_filepath/Linux_at_SCC_NTI/NTI310/automagic_install/lab_1_nagios/nagios_server.sh"
+
+nagios_server_internal_ip=$(gcloud compute instances list | grep nagios-a | awk '{ print $4 }' | tail -1)
+nagios_server_external_ip=$(gcloud compute instances list | grep nagios-a | awk '{ print $5 }' | tail -1)
+
+echo "your nagios-a internal ip is $nagios_server_internal_ip"
+echo "your nagios-a internal ip is $nagios_server_internal_ip" >> $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/instance_internal_ip_servers.txt
+
+echo "your nagios-a external ip is http://$nagios_server_external_ip"
+echo "your nagios-a external ip is http://$nagios_server_external_ip" >> $user_filepath/Linux_at_SCC_NTI/NTI320/automagic_install/instance_internal_ip_servers.txt
+
+
 # TODO: Cacti
 
-# # I use gsed on my mac since it's most similar to sed on Linux
-# gsed -i "s,nfs_server_ip,$nfs_server_internal_ip," /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_5_nfs_ldap/ldap_nfs_client.sh
-# gsed -i "s,ldap_server_ip,$ldap_server_internal_ip," /Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_5_nfs_ldap/ldap_nfs_client.sh
-#
-# gcloud compute instances create client-a \
-#     --zone us-west1-b \
-#     --machine-type f1-micro \
-#     --image-family ubuntu-1604-lts \
-#     --image-project ubuntu-os-cloud \
-#     --metadata-from-file startup-script="/Users/codes/__CODE/Linux_at_SCC_NTI/NTI310/automagic_install/lab_5_nfs_ldap/ldap_nfs_client.sh"
-#
 # gcloud compute instances create client-b \
 #     --zone us-west1-b \
 #     --machine-type f1-micro \
