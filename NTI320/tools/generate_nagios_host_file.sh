@@ -5,7 +5,7 @@ do
   echo "$client_name" "$nrpe_internal_ip"
 done;
 
-# Old worse code
+# Old iteration
 # for server_name in $(gcloud compute instances list | awk 'NR >= 2 { print $1 }');
 # do
 #   server_details="$(gcloud compute instances list | grep $server_name);"
