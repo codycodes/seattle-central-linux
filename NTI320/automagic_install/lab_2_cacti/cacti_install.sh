@@ -16,7 +16,7 @@ db_password="P@ssw0rd1"
 # read cacti_password
 cacti_password="P@ssw0rd1"
 
-mysql -u root password $db_password
+mysqladmin -u root password $db_password
 
 echo "create database cacti;
 GRANT ALL ON cacti.* TO cacti@localhost IDENTIFIED BY '$cacti_password';
@@ -27,7 +27,7 @@ flush privileges;" > cacti_auth.sql
 mysql -p"$db_password" -u root < cacti_auth.sql # insert this sql into the db
 
 # add tzinfo to mysql db
-mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -p"$db_password" --database=mysql
+mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p"$db_password" --database=mysql
 
 cacti_path=$(rpm -ql cacti | grep cacti.sql) # grabs the path to cacti
 
