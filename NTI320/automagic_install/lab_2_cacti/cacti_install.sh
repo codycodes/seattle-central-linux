@@ -16,13 +16,15 @@ db_password="P@ssw0rd1"
 # read cacti_password
 cacti_password="P@ssw0rd1"
 
+mysql -u root password $db_password
+
 echo "create database cacti;
 GRANT ALL ON cacti.* TO cacti@localhost IDENTIFIED BY '$cacti_password';
 FLUSH privileges;
 
 GRANT SELECT ON mysql.time_zone_name TO cacti@localhost;
 flush privileges;" > cacti_auth.sql
-mysql -p"$db_password" < cacti_auth.sql # insert this sql into the db
+mysql -p"$db_password" -u root < cacti_auth.sql # insert this sql into the db
 
 # add tzinfo to mysql db
 mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -p"$db_password" --database=mysql
@@ -53,4 +55,4 @@ enabled=1
 gpgcheck=0
 " >> /etc/yum.repos.d/NTI-320.repo
 
-echo "*.info;mail.none;authpriv.none;cron.none   @$syslog_internal_ip" >> /etc/rsyslog.conf && systemctl restart rsyslog.service
+echo "*.info;mail.none;authpriv.none;cron.none   @syslog_internal_ip$" >> /etc/rsyslog.conf && systemctl restart rsyslog.service
