@@ -15,7 +15,7 @@ openssl req \
 cp mail.nti310.com.key mail.nti310.com.crt /etc/ssl/
 
 cp /etc/exim/exim.conf{,.orig} # create a backup of the file (not a directory) exim.conf
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/ldab_4_mail_server/exim_configuration" > /etc/exim/exim.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/lab_4_mail_server/exim_configuration" > /etc/exim/exim.conf
 
 systemctl start exim && systemctl enable exim
 systemctl status exim
@@ -43,10 +43,10 @@ tail /var/log/exim/main.log # follow the mail messages
 # 2018-05-30 21:55:11 1fO8xd-0000ZR-Ec H=mail.mydomain.com [65.254.254.54] Connection timed out
 
 cp -r /etc/dovecot/conf.d{,.orig} # recursively create a backup of the directory
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/ldab_4_mail_server/dovecot_ssl_config" > /etc/dovecot/conf.d/10-ssl.conf
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/ldab_4_mail_server/dovecot_auth_config" > /etc/dovecot/conf.d/10-auth.conf
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/ldab_4_mail_server/dovecot_mail_config" > /etc/dovecot/conf.d/10-mail.conf
-curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/ldab_4_mail_server/dovecot_master_config" > /etc/dovecot/conf.d/10-master.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/lab_4_mail_server/dovecot_ssl_config" > /etc/dovecot/conf.d/10-ssl.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/lab_4_mail_server/dovecot_auth_config" > /etc/dovecot/conf.d/10-auth.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/lab_4_mail_server/dovecot_mail_config" > /etc/dovecot/conf.d/10-mail.conf
+curl "https://raw.githubusercontent.com/codycodes/Linux_at_SCC_NTI/master/NTI310/automagic_install/lab_4_mail_server/dovecot_master_config" > /etc/dovecot/conf.d/10-master.conf
 
 systemctl start dovecot && systemctl enable dovecot
 systemctl status dovecot
